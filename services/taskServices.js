@@ -12,11 +12,11 @@ export async function getAllTasks() {
 export async function getTaskById(id) {
   try {
 
-    // Check if task exists
+    // TODO: Check if task exists
 
-    // If not, throw an error
+    // TODO: If not, throw an error
 
-    // If it does, return the task
+    // TODO: If it does, return the task
     
 
   } catch (error) {
@@ -32,9 +32,9 @@ export async function createTask(taskData) {
       taskData.status === "in-progress" ? "in_progress" : taskData.status;
 
 
-      // Create the new task where all the task data is in "taskData", also create the subtasks with the data in "taskData.subtasks". Return the created task and it's subtasks using the include option.
+      // TODO: Create the new task where all the task data is in "taskData", also create the subtasks with the data in "taskData.subtasks". Return the created task and it's subtasks using the include option.
     
-      
+
   } catch (error) {
     throw new Error(`Error creating task: ${error.message}`);
   }
