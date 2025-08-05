@@ -35,11 +35,13 @@ The project currently has a basic task management API with the following structu
 
 **Main Task Operations:**
 
-- `GET /api/tasks` - Get all tasks
-- `GET /api/tasks/:id` - Get task by ID ⚠️ **YOU NEED TO COMPLETE THIS**
-- `POST /api/tasks` - Create new task ⚠️ **YOU NEED TO COMPLETE THIS**
+- `GET /api/tasks` - Get all tasks (Already implemented)
+- `GET /api/tasks/:id` - Get task by ID (Already implemented)
+- `POST /api/tasks` - Create new task (Already implemented)
 - `PUT /api/tasks/:id` - Update entire task (Already implemented)
 - `DELETE /api/tasks/:id` - Delete specific task (Already implemented)
+
+**Note:** The routes are already implemented. You need to complete the underlying service functions and Prisma schema.
 
 #### Data Structure
 
@@ -75,11 +77,46 @@ You need to complete the following:
 
 **Location:** `prisma/schema.prisma`
 
-The schema file is partially completed. You need to:
+The schema file is partially completed with TODO comments. You need to complete the following models and enums:
 
-- Complete the Subtask model with all required fields
-- Complete the TaskStatus enum with values: pending, in_progress, completed, cancelled
-- Complete the Priority enum with values: low, medium, high, urgent
+**Subtask Model:**
+
+```prisma
+model Subtask {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  completed   Boolean  @default(false)
+  taskId      String
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("subtasks")
+}
+```
+
+**TaskStatus Enum:**
+
+```prisma
+enum TaskStatus {
+  pending
+  in_progress
+  completed
+  cancelled
+}
+```
+
+**Priority Enum:**
+
+```prisma
+enum Priority {
+  low
+  medium
+  high
+  urgent
+}
+```
 
 #### 2. Configure Environment Variables - `.env`
 
@@ -92,31 +129,29 @@ The schema file is partially completed. You need to:
 
 **Location:** `services/taskServices.js` - getTaskById function
 
-The function structure is provided. You need to:
+The function has TODO comments that need to be implemented:
 
-- Use Prisma to find the task by ID
-- Include subtasks in the result
-- Handle cases where task doesn't exist
-- Return the task or null if not found
+- Check if task exists using Prisma
+- If not found, throw an error
+- If found, return the task with subtasks included
 
 #### 4. Complete createTask Function - `services/taskServices.js`
 
 **Location:** `services/taskServices.js` - createTask function
 
-The function structure is provided. You need to:
+The function has TODO comments that need to be implemented:
 
-- Create the new task using Prisma
+- Create the new task using Prisma with all task data from taskData
 - Create subtasks if provided in taskData.subtasks
-- Include subtasks in the response
-- Handle validation errors from Prisma
+- Return the created task with subtasks included using the include option
 
 ### Task 4: Testing Your Implementation
 
 You can use Postman or curl to test your endpoints.
 
-### Task 5: Stretch Goals
+## Task 5: Stretch Goals
 
-#### Add Task Filtering
+### Add Task Filtering
 
 **Objective:** Add filtering capabilities to the GET /api/tasks endpoint.
 
@@ -138,17 +173,6 @@ You can use Postman or curl to test your endpoints.
 3. **Update the Task model** to include categoryId
 4. **Implement category-based filtering**
 
-#### Add User Authentication
-
-**Objective:** Integrate Supabase Auth for user management.
-
-**Requirements:**
-
-1. **Add User model** to the Prisma schema
-2. **Integrate Supabase Auth** for authentication
-3. **Add user ownership** to tasks
-4. **Implement user-based access control**
-
 ## Learning Objectives
 
 By completing this project, you will demonstrate understanding of:
@@ -164,10 +188,10 @@ By completing this project, you will demonstrate understanding of:
 
 ## Submission Format
 
-- [ ] Complete the Prisma schema with all required models and relationships
+- [ ] Complete the Prisma schema with all required models and relationships (Subtask model, TaskStatus enum, Priority enum)
 - [ ] Configure environment variables with Supabase credentials
-- [ ] Implement getTaskById function with proper error handling
-- [ ] Implement createTask function with validation and subtask support
+- [ ] Complete getTaskById function with proper error handling and task existence checks
+- [ ] Complete createTask function with validation and subtask support
 - [ ] Test all endpoints using curl or Postman
 - [ ] Optional: Implement stretch goals with filtering and categories
 
