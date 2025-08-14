@@ -15,11 +15,23 @@ const router = express.Router();
 // res = response object (used to send data back to client)
 router.get("/tasks", async (req, res) => {
   try {
-    const tasks = await getAllTasks();
+    const { status, priority, assignedTo, search, page, pageSize } = req.query;
+
+    const { tasks, total } = await getAllTasks({
+      status,
+      priority,
+      assignedTo,
+      search,
+      page: Number(page) || 1,
+      pageSize: Number(pageSize) || 10,
+    });
 
     res.json({
       success: true,
       count: tasks.length,
+      total,
+      page: Number(page) || 1,
+      pageSize: Number(pageSize) || 10,
       data: tasks,
     });
   } catch (error) {
@@ -29,6 +41,7 @@ router.get("/tasks", async (req, res) => {
     });
   }
 });
+
 
 // GET /api/tasks/:id - Get task by ID
 // :id is a route parameter - it captures the value from the URL
